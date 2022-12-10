@@ -238,19 +238,20 @@ impl Drop for Image {
 
 unsafe impl Send for Image {}
 
-impl<'a> From<&'a DynamicImage> for Image {
-    fn from(from: &'a DynamicImage) -> Self {
+impl From<&DynamicImage> for Image {
+    fn from(from: &DynamicImage) -> Self {
         match from {
             DynamicImage::ImageLuma8(image) => image.into(),
             DynamicImage::ImageLumaA8(image) => image.into(),
             DynamicImage::ImageRgb8(image) => image.into(),
             DynamicImage::ImageRgba8(image) => image.into(),
-            DynamicImage::ImageBgr8(image) => image.into(),
-            DynamicImage::ImageBgra8(image) => image.into(),
             DynamicImage::ImageLuma16(image) => image.into(),
             DynamicImage::ImageLumaA16(image) => image.into(),
             DynamicImage::ImageRgb16(image) => image.into(),
             DynamicImage::ImageRgba16(image) => image.into(),
+            DynamicImage::ImageRgb32F(image) => image.into(),
+            DynamicImage::ImageRgba32F(image) => image.into(),
+            &_ => unreachable!(),
         }
     }
 }
