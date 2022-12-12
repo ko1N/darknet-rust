@@ -6,11 +6,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-unix-bundled:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
+  build-linux-bundled:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Checkout submodules
@@ -20,6 +17,24 @@ jobs:
       with:
         toolchain: 1.65.0
         override: true
+    - name: Build
+      run: cargo build --verbose --features build
+    - name: Run tests
+      run: cargo test --verbose --features build
+
+  build-mac-bundled:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule init && git submodule update --recursive
+    - name: Install rust 1.65.0
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: 1.65.0
+        override: true
+    - name: Install OpenMP
+      run: brew install libomp
     - name: Build
       run: cargo build --verbose --features build
     - name: Run tests
