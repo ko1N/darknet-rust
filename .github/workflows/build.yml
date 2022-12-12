@@ -21,9 +21,9 @@ jobs:
         toolchain: 1.65.0
         override: true
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --verbose --features build
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --verbose --features build
 
   build-windows-vcpkg:
     runs-on: windows-latest
