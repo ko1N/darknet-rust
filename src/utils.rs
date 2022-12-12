@@ -1,4 +1,5 @@
 use crate::Error;
+#[cfg(unix)]
 use std::os::unix::ffi::OsStrExt;
 use std::{ffi::CString, path::Path};
 
