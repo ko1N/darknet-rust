@@ -6,8 +6,11 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-linux-bundled:
-    runs-on: ubuntu-latest
+  build-unix-bundled:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
     - name: Checkout submodules
@@ -27,13 +30,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: lukka/get-cmake@latest
-    - name: Restore artifacts, or setup vcpkg (do not install any package)
-      uses: lukka/run-vcpkg@v10
     - name: Run vcpkg
       uses: lukka/run-vcpkg@v4
       with:
         vcpkgArguments: 'darknet:x64-windows'
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+        vcpkgGitCommitId: 'cf1fda5443f2acfa976d5bda70c50fa22c26fe80'
+        runVcpkgInstall: true
     - name: Checkout submodules
       run: git submodule init && git submodule update --recursive
     - name: Install rust 1.65.0
